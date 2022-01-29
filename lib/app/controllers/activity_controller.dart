@@ -9,6 +9,9 @@ abstract class ActivityController with Store {
   @observable
   ActionState state = ActionState.loading;
 
+  @observable
+  int value = 0;
+
   List<ActivityDto> activitiesSource = [];
 
   ObservableList<ActivityStore> activities =
@@ -21,5 +24,19 @@ abstract class ActivityController with Store {
     state = ActionState.loading;
     activities = ActivityHelper.aplyViewConfig(activitiesSource);
     state = ActionState.success;
+  }
+
+  @action
+  void increment() {
+    value = value + 1;
+  }
+
+  @action
+  void changeState() {
+    if (state == ActionState.loading) {
+      state = ActionState.success;
+    } else {
+      state = ActionState.loading;
+    }
   }
 }
