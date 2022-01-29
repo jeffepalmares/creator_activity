@@ -19,7 +19,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_mobx: ^2.0.2
-  flutter_modular: ^2.0.1
+  flutter_modular: ^4.4.0
   flutter_svg: ^0.23.0+1
   hive: ^2.0.4
   hive_flutter: ^1.1.0
