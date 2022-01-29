@@ -15,7 +15,7 @@ environment:
 dependencies:
   cached_network_image: ^3.0.0
   commons_flutter:
-    git: https://github.com/jeffepalmares/commons-flutter
+    git: /Users/jeffersoncardoso/Documents/Dev/sources/commons_creator
   flutter:
     sdk: flutter
   flutter_mobx: ^2.0.2

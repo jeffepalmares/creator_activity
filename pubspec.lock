@@ -168,7 +168,7 @@ packages:
       path: "."
       ref: HEAD
       resolved-ref: "13a16c52d79ed9c0af35cac184246b67e77a6133"
-      url: "https://github.com/jeffepalmares/commons-flutter"
+      url: "/Users/jeffersoncardoso/Documents/Dev/sources/commons_creator"
     source: git
     version: "0.0.1"
   connectivity:

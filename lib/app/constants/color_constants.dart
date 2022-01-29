@@ -14,4 +14,5 @@ abstract class ColorConstants {
   static final Color whiteGrey = HexColor.fromHex("#757575");
   static final Color softBlue = HexColor.fromHex("#2E96E6");
   static final Color defaultGreen = HexColor.fromHex("#049E19");
+  static final Color buttonBlue = HexColor.fromHex("#4267B2");
 }
