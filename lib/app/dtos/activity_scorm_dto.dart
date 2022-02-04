@@ -5,14 +5,14 @@ class ActivityScormDto {
   ActivityScormDto({this.core, this.interactions});
 
   ActivityScormDto.fromJson(Map<String, dynamic> json) {
-    core = json['core'] != null ? new Core.fromJson(json['core']) : null;
+    core = json['core'] != null ? Core.fromJson(json['core']) : null;
     interactions = json['interactions'] != null
         ? Interactions.fromJson(json['interactions'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (core != null) {
       data['core'] = core?.toJson();
     }

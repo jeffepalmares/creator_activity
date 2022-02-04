@@ -52,7 +52,7 @@ abstract class StudentActivityLogic extends ActivityLogic {
 
   Future<List<ActivityDto>> getActivitiesFromDataBase() async {
     var activities = await repository.getByKey(LibSession.loggedUser);
-    return activities;
+    return activities ?? [];
   }
 
   Future<SyncRequestDto> syncActivities(SyncRequestDto syncRequest) async {

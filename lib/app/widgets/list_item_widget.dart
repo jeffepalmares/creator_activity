@@ -10,7 +10,7 @@ abstract class ListItemWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16, right: 8, top: 16, bottom: 10),
         child: Row(
           children: <Widget>[
             _rowContent(title, subTitle: subTitle),

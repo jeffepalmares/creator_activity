@@ -111,7 +111,7 @@ class StudenActivityPendingWidgets extends ActivityWidgets {
     );
   }
 
-  static Row _getTags(ActivityStore store) {
+  static Widget _getTags(ActivityStore store) {
     var list = <Widget>[];
     if (ActivityType.file == store.dto?.type) {
       list.add(TagWidgets.build('Entrega de arquivo'));
@@ -121,9 +121,12 @@ class StudenActivityPendingWidgets extends ActivityWidgets {
             bkgColor: Colors.amber, labelColor: Colors.black));
       }
     }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: list,
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: list,
+      ),
     );
   }
 

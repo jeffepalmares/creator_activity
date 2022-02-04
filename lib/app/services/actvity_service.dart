@@ -25,7 +25,7 @@ class StudentActivityService {
 
       var response = await _client.post(uri);
 
-      return ActivityResponse.fromJson(response.data).toDto();
+      return ActivityResponse.fromJson(response).toDto();
     } catch (err) {
       rethrow;
     }
