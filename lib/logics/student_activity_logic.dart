@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:commons_flutter/storage/local_storage.dart';
 import 'package:commons_flutter/utils/app_date_utils.dart';
 import 'package:commons_flutter/utils/app_string_utils.dart';
+import 'package:commons_flutter/utils/disk_utils.dart';
 import 'package:commons_flutter/utils/network_utils.dart';
 import 'package:creator_activity/app/constants/activity_delivery_status.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
@@ -10,85 +11,49 @@ import 'package:creator_activity/app/enums/activity_type_enum.dart';
 import 'package:creator_activity/app/enums/sync_preference_enum.dart';
 import 'package:creator_activity/app/lib_session.dart';
 import 'package:creator_activity/app/services/actvity_service.dart';
+import 'package:creator_activity/logics/activity_download_logic.dart';
 import 'package:creator_activity/logics/activity_logic.dart';
 
-class StudentPadingActivityLogic extends ActivityLogic {
-  final StudentActivityService _service;
-  final ILocalStorage _repository;
+abstract class StudentActivityLogic extends ActivityLogic {
+  final StudentActivityService service;
+  final ILocalStorage repository;
+  final ActivityDownloadLogic downloadLogic;
 
-  StudentPadingActivityLogic(this._service, this._repository);
+  StudentActivityLogic(this.service, this.repository, this.downloadLogic);
+
+  Future<List<ActivityDto>> getActivities(SyncRequestDto syncRequest) async {
+    try {
+      if (AppStringUtils.isEmptyOrNull(LibSession.loggedUser)) {
+        return [];
+      }
+
+      syncRequest.fromDb = await getActivitiesFromDataBase();
+
+      syncRequest = await syncActivities(syncRequest);
+
+      await repository.upsert(syncRequest.result);
+
+      syncRequest.result.sort((a, b) {
+        return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
+      });
+
+      return syncRequest.result;
+    } catch (err) {
+      rethrow;
+    }
+  }
 
   @override
-  Future<void> checkFileActivity(ActivityDto dto) async {
-    dto.delivery?.checked = true;
-    dto.delivery?.checkedDate =
-        AppDateUtils.stringToFormatedDate(DateTime.now().toIso8601String());
-
-    await _service.markDeliveryAsChecked([dto]);
-
-    if (dto.delivery?.shouldRedo ?? false) {
-      dto.lastScore = null;
-      dto.lastScoreDate = null;
-    }
-
-    var acitivities = await getActivitiesFromDataBase();
-
-    for (var element in acitivities) {
-      if (element.code == dto.code) {
-        element.delivery?.checked = dto.delivery?.checked;
-        element.lastScore = dto.lastScore;
-        element.lastScoreDate = dto.lastScoreDate;
-      }
-    }
-    _repository.upsert(acitivities);
-  }
+  Future<void> checkFileActivity(ActivityDto dto) async {}
 
   @override
   Future<ActivityDto> checkLastDeliveryStatus(ActivityDto dto) async {
-    try {
-      if (dto.type != ActivityType.file) return dto;
-
-      var delivery = await _service.getActivityLastDelivery(dto);
-      if (delivery != null) {
-        var activities = await getActivitiesFromDataBase();
-        for (var element in activities) {
-          if (element.code == dto.code) {
-            element.delivery = delivery;
-          }
-        }
-        await _repository.upsert(activities);
-      }
-      return dto;
-    } catch (err) {
-      return dto;
-    }
+    return dto;
   }
 
   Future<List<ActivityDto>> getActivitiesFromDataBase() async {
-    var activities = await _repository.getByKey(LibSession.loggedUser);
+    var activities = await repository.getByKey(LibSession.loggedUser);
     return activities;
-  }
-
-  Future<List<ActivityDto>> loadActivities(SyncRequestDto syncRequest) async {
-    if (AppStringUtils.isEmptyOrNull(LibSession.loggedUser)) {
-      return [];
-    }
-
-    syncRequest.fromDb = await getActivitiesFromDataBase();
-
-    syncRequest = await _sendDoneActivities(syncRequest);
-
-    syncRequest = await syncActivities(syncRequest);
-
-    await _repository.upsert(syncRequest.result);
-
-    syncRequest.result.removeWhere((act) => act.isDone());
-
-    syncRequest.result.sort((a, b) {
-      return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
-    });
-
-    return syncRequest.result;
   }
 
   Future<SyncRequestDto> syncActivities(SyncRequestDto syncRequest) async {
@@ -104,7 +69,7 @@ class StudentPadingActivityLogic extends ActivityLogic {
     }
     await _deleteActivities(syncRequest);
     for (var element in syncRequest.result) {
-      if (element.delivery != null) {
+      if (ActivityType.file == element.type && element.delivery != null) {
         if (element.delivery?.status == ActivityDeliveryStatus.adjusted &&
             (element.delivery?.checked ?? false) &&
             !(element.delivery?.shouldRedo ?? true)) {
@@ -122,24 +87,27 @@ class StudentPadingActivityLogic extends ActivityLogic {
   Future _deleteActivities(SyncRequestDto syncRequest) async {
     syncRequest = _toDeleteActivities(syncRequest);
     for (var act in syncRequest.toDelete) {
-      await deleteLocalActivity(act.code);
+      await deleteDownloadedActivity(act);
     }
   }
 
-  Future deleteLocalActivity(String? code) async {
-    if (AppStringUtils.isEmptyOrNull(code)) return;
-
+  @override
+  Future<ActivityDto> deleteDownloadedActivity(ActivityDto dto) async {
     var list = await getActivitiesFromDataBase();
 
-    var activity = list.firstWhereOrNull((element) => element.code == code);
+    if (AppStringUtils.isNotEmptyOrNull(dto.localLink)) {
+      await DiskUtils.deleteFiles(dto.localLink!);
+    }
 
-    if (activity == null) return;
+    dto.localLink = "";
 
-    //await StorageUtil.deleteFiles(activity.localLink);
+    for (var element in list) {
+      if (element.code == dto.code) element.localLink = "";
+    }
 
-    activity.localLink = "";
-    await _repository.upsert(list);
-    return list;
+    await repository.upsert(list);
+
+    return dto;
   }
 
   SyncRequestDto _toDeleteActivities(SyncRequestDto syncRequest) {
@@ -173,7 +141,7 @@ class StudentPadingActivityLogic extends ActivityLogic {
 
     if (allowSync) {
       try {
-        syncRequest.fromService = await _service.getActivities();
+        syncRequest.fromService = await service.getActivities();
       } catch (err) {
         syncRequest.isSuccessfullyReceivingActivities = false;
         syncRequest.receiveNewErrorMessage =
@@ -204,68 +172,6 @@ class StudentPadingActivityLogic extends ActivityLogic {
       syncRequest.isSuccessfullyReceivingActivities = false;
     }
     return syncRequest;
-  }
-
-  Future<bool> _validateSendDoneActivities(SyncRequestDto request) async {
-    if (request.fromDb.isEmpty) return false;
-
-    if (LibSession.syncPreference == SyncPreference.manual &&
-        !request.isManual) {
-      return false;
-    }
-
-    var isWifi = await NetworkUtils.isWifi();
-
-    if (LibSession.syncPreference == SyncPreference.wifi && !isWifi) {
-      request.isSuccessfullySendingScores = false;
-      request.sendingScoreErrorMessage =
-          "Não foi possivel sincronizar suas notas, você não está conectado via wi-fi";
-      return false;
-    }
-
-    return true;
-  }
-
-  Future<SyncRequestDto> _sendDoneActivities(SyncRequestDto request) async {
-    if (!(await _validateSendDoneActivities(request))) return request;
-
-    var markCheckedDeliveredActivities = request.fromDb
-        .where((element) =>
-            element.synced == false &&
-            element.type == ActivityType.file &&
-            (element.delivery?.checked ?? false))
-        .toList();
-
-    var doneActivities = request.fromDb
-        .where((element) =>
-            element.type != ActivityType.file &&
-            element.scores != null &&
-            (element.synced ?? false) &&
-            (element.scores?.isNotEmpty ?? false))
-        .toList();
-    var doneFileActivities = request.fromDb
-        .where(
-          (element) =>
-              element.synced == false &&
-              element.type == ActivityType.file &&
-              (element.files?.isNotEmpty ?? false),
-        )
-        .toList();
-    if (doneActivities.isNotEmpty) {
-      await _service.sendDoneActivities(doneActivities);
-      for (var element in doneActivities) {
-        element.scores = [];
-        element.synced = true;
-      }
-    }
-    if (markCheckedDeliveredActivities.isNotEmpty) {
-      await _service.markDeliveryAsChecked(markCheckedDeliveredActivities);
-    }
-    if (doneFileActivities.isNotEmpty) {
-      await _service.sendDoneFileActivities(doneFileActivities);
-    }
-    request.isSuccessfullySendingScores = true;
-    return request;
   }
 
   Future<SyncRequestDto> _checkInternetConnection(
@@ -349,5 +255,16 @@ class StudentPadingActivityLogic extends ActivityLogic {
         (db.lastScoreDate == null ||
             DateTime.parse(found.lastScoreDate!)
                 .isBefore(DateTime.parse(db.lastScoreDate!)));
+  }
+
+  @override
+  Future<String> downloadActivity(
+      String code, Function(String) onReceive) async {
+    try {
+      return await downloadLogic.downloadActivity(code, onReceive);
+    } catch (err) {
+      //TODO send error to analytics
+      rethrow;
+    }
   }
 }

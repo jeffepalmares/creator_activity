@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:commons_flutter/exceptions/app_error.dart';
 import 'package:commons_flutter/http/app_http_client.dart';
@@ -25,22 +26,6 @@ class StudentActivityService {
       var response = await _client.post(uri);
 
       return ActivityResponse.fromJson(response.data).toDto();
-    } catch (err) {
-      rethrow;
-    }
-  }
-
-  Future downloadActivity(
-      String code, Function(int, int) receiveProgress) async {
-    try {
-      var uri = "/projeto/pt-br/download/projeto/$code";
-
-      var response = await _client.get(uri,
-          options: HttpRequestConfig(
-              responseType: ResponseType.bytes,
-              receiveProgress: receiveProgress));
-
-      return response.data;
     } catch (err) {
       rethrow;
     }

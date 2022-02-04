@@ -109,7 +109,35 @@ class TrallingIconWidget {
     );
   }
 
+  static Widget deleteActivityIcon(Function() deleteAction) {
+    return IconButton(
+      icon: LibIcons.generateIcon(LibIcon.trash, color: Colors.red),
+      onPressed: deleteAction,
+    );
+  }
+
+  static List<Widget> scoreTralling(String score, bool? isSynced) {
+    var list = <Widget>[];
+    list.add(TrallingIconWidget.scoreIcon(score));
+    list.add(TrallingIconWidget.redoIcon(isSynced));
+    return list;
+  }
+
+  static Widget downloadIco(Function() download) {
+    return IconButton(
+      icon: LibIcons.generateIcon(LibIcon.download,
+          color: ColorConstants.softBlue),
+      onPressed: download,
+    );
+  }
+
+  static Widget eyeIcon() {
+    return LibIcons.generateIcon(LibIcon.eye, height: 25, width: 25);
+  }
+
   static Widget downloadProgress(String percent) {
+    percent = percent.replaceAll("%", "").trim();
+    percent = percent == "##" ? "0" : percent;
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: Stack(
@@ -155,6 +183,17 @@ class TrallingIconWidget {
       stepSize: 1,
       selectedStepSize: 3,
       roundedCap: (_, __) => true,
+    );
+  }
+
+  static Widget notSyncedLegend() {
+    return Row(
+      children: [
+        notSyncedIcon(),
+        AppWidgets.widthSpacer(width: 8),
+        AppWidgets.getText("Atividade não sincronizada!",
+            fontWeight: FontWeight.w500),
+      ],
     );
   }
 }

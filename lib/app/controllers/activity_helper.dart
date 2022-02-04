@@ -37,9 +37,11 @@ abstract class ActivityHelper {
     if (ViewOptionsWidgets.config.sortType == SortType.Desc) {
       list = list.reversed.toList();
     }
-
-    return ObservableList<ActivityStore>.of(list.map((e) => ActivityStore(e)))
-        .asObservable();
+    var observables = list.map((e) {
+      var store = ActivityStore(e);
+      return store;
+    }).toList();
+    return ObservableList<ActivityStore>.of(observables).asObservable();
   }
 
   static String _generateLink(String? prefix, bool? isExam) {

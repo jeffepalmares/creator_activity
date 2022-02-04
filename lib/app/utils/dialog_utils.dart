@@ -1,26 +1,57 @@
+import 'package:commons_flutter/utils/app_navigator.dart';
 import 'package:creator_activity/app/constants/color_constants.dart';
 import 'package:creator_activity/app/widgets/app_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class DialogUtils {
-  static Widget getAlert(BuildContext context, String title, String message,
-      {Function? ontap}) {
+  static Widget _getAlert(BuildContext context, Widget title, Widget content,
+      {List<Widget>? actions, Function()? onTap}) {
+    actions = actions ??
+        [
+          _getButton("OK", () {
+            (onTap ?? onTap!());
+            AppNavigator.pop(context);
+          }, context)
+        ];
     return AlertDialog(
-      title: _getTitle(title),
-      content: _getText(message),
-      actions: <Widget>[
-        _getButton("Ok", ontap, context, setColor: true),
-      ],
+      title: title,
+      content: content,
+      actions: actions,
+    );
+  }
+
+  static void presentConfirmationDialog(BuildContext context, String title,
+      String message, Function confirmationAction,
+      {Function? cancelAction,
+      String confirmationLabel = "Ok",
+      String cancelLabel = "Cancelar"}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return _getAlert(
+            context, _getTitle(title), _getText(message, fontSize: 16),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _getButton(cancelLabel, cancelAction, context),
+                  _getButton(confirmationLabel, confirmationAction, context,
+                      setColor: true)
+                ],
+              ),
+            ]);
+      },
     );
   }
 
   static void presentDialog(BuildContext context, String title, String message,
-      {Function? ontap}) {
+      {Function()? ontap}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return getAlert(context, title, message, ontap: ontap);
+        return _getAlert(context, _getTitle(title), _getText(message),
+            onTap: ontap);
       },
     );
   }
@@ -42,8 +73,9 @@ class DialogUtils {
   }
 
   static Text _getText(String text,
-      {TextAlign textAlignment = TextAlign.left}) {
-    return AppWidgets.getText(text, textAlign: textAlignment);
+      {TextAlign textAlignment = TextAlign.left, double? fontSize}) {
+    return AppWidgets.getText(text,
+        textAlign: textAlignment, fontSize: fontSize);
   }
 
   static Widget _getButton(String label, Function? onTap, BuildContext context,

@@ -9,7 +9,7 @@ abstract class _ActivityStore with Store {
   ActivityDto? dto;
 
   _ActivityStore(ActivityDto dto) {
-    dto = dto;
+    this.dto = dto;
     isDownloaded = !AppStringUtils.isEmptyOrNull(dto.localLink);
     hasScore = dto.hasScore();
     score = this.dto?.score;

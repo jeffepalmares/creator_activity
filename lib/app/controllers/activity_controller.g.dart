@@ -16,6 +16,13 @@ mixin _$ActivityController on _ActivityControllerBase, Store {
       (_$isLoadingComputed ??= Computed<bool>(() => super.isLoading,
               name: '_ActivityControllerBase.isLoading'))
           .value;
+  Computed<int>? _$listSizeComputed;
+
+  @override
+  int get listSize =>
+      (_$listSizeComputed ??= Computed<int>(() => super.listSize,
+              name: '_ActivityControllerBase.listSize'))
+          .value;
 
   final _$stateAtom = Atom(name: '_ActivityControllerBase.state');
 
@@ -47,6 +54,24 @@ mixin _$ActivityController on _ActivityControllerBase, Store {
     });
   }
 
+  final _$deleteDownloadedActivityAsyncAction =
+      AsyncAction('_ActivityControllerBase.deleteDownloadedActivity');
+
+  @override
+  Future<void> deleteDownloadedActivity(ActivityStore activity) {
+    return _$deleteDownloadedActivityAsyncAction
+        .run(() => super.deleteDownloadedActivity(activity));
+  }
+
+  final _$downloadActivityAsyncAction =
+      AsyncAction('_ActivityControllerBase.downloadActivity');
+
+  @override
+  Future<void> downloadActivity(ActivityStore activity) {
+    return _$downloadActivityAsyncAction
+        .run(() => super.downloadActivity(activity));
+  }
+
   final _$checkFileActivityAsyncAction =
       AsyncAction('_ActivityControllerBase.checkFileActivity');
 
@@ -68,9 +93,9 @@ mixin _$ActivityController on _ActivityControllerBase, Store {
       ActionController(name: '_ActivityControllerBase');
 
   @override
-  void aplyViewConfig() {
+  void applyViewConfig() {
     final _$actionInfo = _$_ActivityControllerBaseActionController.startAction(
-        name: '_ActivityControllerBase.aplyViewConfig');
+        name: '_ActivityControllerBase.applyViewConfig');
     try {
       return super.applyViewConfig();
     } finally {
@@ -83,7 +108,8 @@ mixin _$ActivityController on _ActivityControllerBase, Store {
     return '''
 state: ${state},
 activities: ${activities},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+listSize: ${listSize}
     ''';
   }
 }

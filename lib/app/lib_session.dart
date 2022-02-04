@@ -7,4 +7,5 @@ abstract class LibSession {
   static String loggedUserPicture = "";
   static String httpToken = "";
   static SyncPreference syncPreference = SyncPreference.automatically;
+  static bool isExternalStorage = false;
 }

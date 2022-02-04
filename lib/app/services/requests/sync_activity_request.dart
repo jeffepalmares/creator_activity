@@ -31,7 +31,7 @@ class SyncAtividadeRequest {
             ?.map((e) => FormData.fromMap({
                   'projeto': activity.id,
                   'conteudo[]': MultipartFile.fromBytes(
-                      EncodeUtils.base64ToBytes(
+                      EncodeUtils.toBase64ToBytes(
                           AppStringUtils.defaultValue(e.content)),
                       filename: e.name),
                 }))
