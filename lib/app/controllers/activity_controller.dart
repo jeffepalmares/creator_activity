@@ -3,13 +3,13 @@ import 'package:commons_flutter/utils/app_navigator.dart';
 import 'package:creator_activity/app/constants/lib_routes.dart';
 import 'package:creator_activity/app/controllers/activity_helper.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
+import 'package:creator_activity/app/dtos/sync_request_dto.dart';
 import 'package:creator_activity/app/enums/action_state_enum.dart';
 import 'package:creator_activity/app/lib_session.dart';
+import 'package:creator_activity/app/logics/activity_logic.dart';
 import 'package:creator_activity/app/utils/dialog_utils.dart';
-import 'package:creator_activity/logics/activity_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-
 import 'stores/activity_store.dart';
 part 'activity_controller.g.dart';
 
@@ -34,11 +34,23 @@ abstract class _ActivityControllerBase with Store {
 
   Future<String?> generateActivityLink(ActivityStore store);
 
-  Future<void> openActivity(ActivityStore store);
-
-  Future<List<ActivityDto>> loadActivities();
-
   Future<void> syncActivities();
+
+  @action
+  Future<List<ActivityDto>> loadActivities({bool isManual = false}) async {
+    state = ActionState.loading;
+    activitiesSource = await _logic.loadActivities(SyncRequestDto(isManual));
+    applyViewConfig();
+    state = ActionState.success;
+    return activitiesSource;
+  }
+
+  @action
+  Future<void> openActivity(ActivityStore store) async {
+    await doOpenActivity(store);
+    activitiesSource.removeWhere((element) => element.hasScore());
+    applyViewConfig();
+  }
 
   @action
   Future<void> deleteDownloadedActivity(ActivityStore activity) async {
@@ -69,34 +81,38 @@ abstract class _ActivityControllerBase with Store {
   }
 
   Future<void> doOpenActivity(ActivityStore store) async {
-    state = ActionState.loading;
+    try {
+      state = ActionState.loading;
 
-    store.dto = await _logic.checkLastDeliveryStatus(store.dto!);
+      store.dto = await _logic.checkLastDeliveryStatus(store.dto!);
 
-    if (!(await ActivityHelper.validateCanOpen(
-        store, LibSession.loggedAge, context))) {
-      return;
+      if (!(await ActivityHelper.validateCanOpen(
+          store, LibSession.loggedAge, context))) {
+        return;
+      }
+
+      var link = await generateActivityLink(store);
+
+      if (link == null) return;
+
+      link = EncodeUtils.encodeUri(link);
+
+      debugPrint('Link: $link');
+
+      await AppNavigator.pushNamed(LibRoutes.openActivity,
+          arguments: {"link": link, 'dto': store.dto});
+      store.setScore();
+
+      if (store.dto?.showPopup ?? false) {
+        DialogUtils.presentDialog(context, "Sucesso",
+            "Nota gravada com sucesso.\nNota: ${store.score}%");
+        store.dto?.showPopup = false;
+      }
+
+      state = ActionState.success;
+    } catch (err) {
+      state = ActionState.success;
     }
-
-    var link = await generateActivityLink(store);
-
-    if (link == null) return;
-
-    link = EncodeUtils.encodeUri(link);
-
-    debugPrint('Link: $link');
-
-    await AppNavigator.pushNamed(LibRoutes.openActivity,
-        arguments: {"link": link, 'dto': store.dto});
-    store.setScore();
-
-    if (store.dto?.showPopup ?? false) {
-      DialogUtils.presentDialog(context, "Sucesso",
-          "Nota gravada com sucesso.\nNota: ${store.score}%");
-      store.dto?.showPopup = false;
-    }
-
-    state = ActionState.success;
   }
 
   @action

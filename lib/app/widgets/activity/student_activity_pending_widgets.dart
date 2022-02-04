@@ -46,7 +46,7 @@ class StudenActivityPendingWidgets extends ActivityWidgets {
       store.dto?.name ?? "",
       onTap: () => _controller.openActivity(store),
       subTitle: _getSubtitle(store),
-      trailling: _getTrailing(store),
+      trailing: _getTrailing(store),
     );
   }
 
@@ -83,11 +83,30 @@ class StudenActivityPendingWidgets extends ActivityWidgets {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppWidgets.getText(
-          getSubtitleDate(store.dto!),
-          fontColor: ColorConstants.defaultGrey,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            LibIcons.generateIcon(
+              LibIcon.calendarCheck,
+              color: Colors.green,
+              height: 15,
+              width: 13,
+            ),
+            AppWidgets.widthSpacer(width: 5),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppWidgets.getText(
+                  getSubtitleDate(store.dto!),
+                  fontColor: ColorConstants.defaultGrey,
+                ),
+              ],
+            ),
+          ],
         ),
-        _getTags(store)
+        Container(
+          child: _getTags(store),
+        )
       ],
     );
   }

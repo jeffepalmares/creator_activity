@@ -1,11 +1,8 @@
 import 'package:creator_activity/app/dtos/activity_dto.dart';
 import 'package:creator_activity/app/dtos/sync_request_dto.dart';
-import 'package:creator_activity/logics/activity_download_logic.dart';
-
 import 'package:creator_activity/app/services/actvity_service.dart';
-
 import 'package:commons_flutter/storage/local_storage.dart';
-
+import 'activity_download_logic.dart';
 import 'student_activity_logic.dart';
 
 class StudentPedingActivityLogic extends StudentActivityLogic {

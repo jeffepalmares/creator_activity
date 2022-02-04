@@ -27,7 +27,7 @@ abstract class GroupedListTable {
       return Container(
         color: Colors.grey[200],
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.only(left: 16, top: 10, bottom: 10),
           child: Text(
             value,
             style: TextStyle(

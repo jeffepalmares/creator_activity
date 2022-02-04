@@ -18,22 +18,6 @@ mixin _$DoneActivityController on _DoneActivityController, Store {
         .run(() => super.generateActivityLink(store));
   }
 
-  final _$openActivityAsyncAction =
-      AsyncAction('_DoneActivityController.openActivity');
-
-  @override
-  Future<void> openActivity(ActivityStore store) {
-    return _$openActivityAsyncAction.run(() => super.openActivity(store));
-  }
-
-  final _$loadActivitiesAsyncAction =
-      AsyncAction('_DoneActivityController.loadActivities');
-
-  @override
-  Future<List<ActivityDto>> loadActivities() {
-    return _$loadActivitiesAsyncAction.run(() => super.loadActivities());
-  }
-
   final _$syncActivitiesAsyncAction =
       AsyncAction('_DoneActivityController.syncActivities');
 

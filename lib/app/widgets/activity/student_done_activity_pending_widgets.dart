@@ -30,7 +30,7 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
   Widget _pageBody() {
     return Column(children: [
       Padding(
-          padding: const EdgeInsets.only(top: 20, left: 10, bottom: 10),
+          padding: const EdgeInsets.only(top: 15, left: 16, bottom: 10),
           child: Column(
             children: [
               ProfileWidgets.titlePanel("Histórico de aulas"),
@@ -61,8 +61,6 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
         child: activityListTable(controller, indexedItemBuilder: _itemBuild),
       )),
     ]);
-
-    //return activityListTable(controller, indexedItemBuilder: _itemBuild);
   }
 
   AppBar _appBar() {
@@ -77,7 +75,7 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
           ? () => _controller.openActivity(store)
           : null,
       subTitle: _getSubtitle(store),
-      trailling: _getTrailing(store),
+      trailing: _getTrailing(store),
     );
   }
 

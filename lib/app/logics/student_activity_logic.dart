@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:commons_flutter/storage/local_storage.dart';
-import 'package:commons_flutter/utils/app_date_utils.dart';
 import 'package:commons_flutter/utils/app_string_utils.dart';
 import 'package:commons_flutter/utils/disk_utils.dart';
 import 'package:commons_flutter/utils/network_utils.dart';
@@ -11,8 +10,8 @@ import 'package:creator_activity/app/enums/activity_type_enum.dart';
 import 'package:creator_activity/app/enums/sync_preference_enum.dart';
 import 'package:creator_activity/app/lib_session.dart';
 import 'package:creator_activity/app/services/actvity_service.dart';
-import 'package:creator_activity/logics/activity_download_logic.dart';
-import 'package:creator_activity/logics/activity_logic.dart';
+import 'activity_download_logic.dart';
+import 'activity_logic.dart';
 
 abstract class StudentActivityLogic extends ActivityLogic {
   final StudentActivityService service;

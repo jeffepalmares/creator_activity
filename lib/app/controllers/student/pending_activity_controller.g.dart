@@ -26,14 +26,6 @@ mixin _$PendingActivityController on _PendingActivityControllerBase, Store {
     return _$syncActivitiesAsyncAction.run(() => super.syncActivities());
   }
 
-  final _$openActivityAsyncAction =
-      AsyncAction('_PendingActivityControllerBase.openActivity');
-
-  @override
-  Future<void> openActivity(ActivityStore store) {
-    return _$openActivityAsyncAction.run(() => super.openActivity(store));
-  }
-
   @override
   String toString() {
     return '''

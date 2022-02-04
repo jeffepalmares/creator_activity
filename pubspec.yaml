@@ -53,6 +53,7 @@ assets:
   - assets/images/icons/trash_icon.svg
   - assets/images/icons/eye_icon.svg
   - assets/images/icons/download_icon.svg
+  - assets/images/icons/calendar_check_icon.svg
 
 fonts:
   - family: segoe-ui

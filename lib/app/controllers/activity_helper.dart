@@ -49,7 +49,7 @@ abstract class ActivityHelper {
   }
 
   static bool _isOnlineOpenActivity(ActivityStore store) {
-    return store.isDownloaded &&
+    return !store.isDownloaded &&
         !AppStringUtils.isEmptyOrNull(store.dto?.localLink);
   }
 
@@ -105,9 +105,9 @@ abstract class ActivityHelper {
     return true;
   }
 
-  static dynamic getFileParams(ActivityStore store) {
+  static String getFileParams(ActivityStore store) {
     if (!_isOnlineOpenActivity(store)) {
-      return {
+      return EncodeUtils.jsonToString({
         "isAppAluno": true,
         "isGravarOffline": true,
         "callback": "offlineDeliveryFile", // função sem o postMessage
@@ -119,9 +119,9 @@ abstract class ActivityHelper {
           "upload_file_max_size":
               20 // informação da api de limites da plataforma
         }
-      };
+      });
     }
-    return {
+    return EncodeUtils.jsonToString({
       "isAppAluno": true,
       "token": LibSession.httpToken,
       "endpointUpload":
@@ -136,6 +136,6 @@ abstract class ActivityHelper {
             60, // informação da api de limites da plataforma
         "upload_file_max_size": 20 // informação da api de limites da plataforma
       }
-    };
+    });
   }
 }

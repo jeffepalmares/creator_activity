@@ -54,6 +54,23 @@ mixin _$ActivityController on _ActivityControllerBase, Store {
     });
   }
 
+  final _$loadActivitiesAsyncAction =
+      AsyncAction('_ActivityControllerBase.loadActivities');
+
+  @override
+  Future<List<ActivityDto>> loadActivities({bool isManual = false}) {
+    return _$loadActivitiesAsyncAction
+        .run(() => super.loadActivities(isManual: isManual));
+  }
+
+  final _$openActivityAsyncAction =
+      AsyncAction('_ActivityControllerBase.openActivity');
+
+  @override
+  Future<void> openActivity(ActivityStore store) {
+    return _$openActivityAsyncAction.run(() => super.openActivity(store));
+  }
+
   final _$deleteDownloadedActivityAsyncAction =
       AsyncAction('_ActivityControllerBase.deleteDownloadedActivity');
 
