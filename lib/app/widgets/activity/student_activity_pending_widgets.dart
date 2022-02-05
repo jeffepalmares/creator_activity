@@ -3,7 +3,6 @@ import 'package:creator_activity/app/constants/lib_icons.dart';
 import 'package:creator_activity/app/controllers/stores/activity_store.dart';
 import 'package:creator_activity/app/controllers/student/pending_activity_controller.dart';
 import 'package:creator_activity/app/enums/activity_type_enum.dart';
-import 'package:creator_activity/app/lib_session.dart';
 import 'package:creator_activity/app/widgets/app_widgets.dart';
 import 'package:creator_activity/app/widgets/profile/profile_widgets.dart';
 import 'package:creator_activity/app/widgets/tag_widgets.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../list_item_widget.dart';
-import 'activity_view_option_widget.dart';
 import 'activity_widget.dart';
 
 class StudenActivityPendingWidgets extends ActivityWidgets {
@@ -22,31 +20,20 @@ class StudenActivityPendingWidgets extends ActivityWidgets {
   StudenActivityPendingWidgets(this._controller) : super(_controller);
 
   @override
-  Widget build() {
-    return activityScaffold(controller, _appBar, _pageBody);
-  }
-
-  Widget _pageBody() {
-    return Column(children: [
+  List<Widget> pageBodyItems() {
+    return [
       ProfileWidgets.pendingProfilePanel(controller.listSize),
-      Expanded(
-          child: SingleChildScrollView(
-        child: activityListTable(controller, indexedItemBuilder: _itemBuild),
-      )),
-    ]);
+      activityListTable(controller, indexedItemBuilder: itemBuild),
+    ];
   }
 
-  AppBar _appBar() {
-    return getActivityAppBar("Olá ${LibSession.loggedUserName}",
-        leading: _getLeading(), actions: _getAction());
-  }
-
-  Widget _itemBuild(BuildContext _, ActivityStore store, int index) {
+  @override
+  Widget itemBuild(BuildContext context, ActivityStore activity, int index) {
     return ListItemWidget.listItem(
-      store.dto?.name ?? "",
-      onTap: () => _controller.openActivity(store),
-      subTitle: _getSubtitle(store),
-      trailing: _getTrailing(store),
+      activity.dto?.name ?? "",
+      onTap: () => _controller.openActivity(activity),
+      subTitle: _getSubtitle(activity),
+      trailing: _getTrailing(activity),
     );
   }
 
@@ -128,31 +115,5 @@ class StudenActivityPendingWidgets extends ActivityWidgets {
         children: list,
       ),
     );
-  }
-
-  List<Widget> _getAction() {
-    return [
-      IconButton(
-        icon: LibIcons.generateIcon(LibIcon.syncIcon,
-            color: Colors.white, height: 45, width: 45),
-        onPressed: () async => await _controller.syncActivities(),
-      )
-    ];
-  }
-
-  Widget _getLeading() {
-    return IconButton(
-        icon: const Icon(
-          Icons.settings,
-        ),
-        onPressed: () {
-          showDialog(
-            context: _controller.context,
-            builder: (ctx) {
-              return ActivityViewConfigWidgets.getViewOptionsBody(
-                  _controller.context, _controller.applyViewConfig);
-            },
-          );
-        });
   }
 }

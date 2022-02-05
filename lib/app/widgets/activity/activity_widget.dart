@@ -13,13 +13,30 @@ import 'package:flutter/material.dart';
 
 import '../grouped_list_table.dart';
 import '../tralling_icon_widget.dart';
+import 'activity_app_bar.dart';
 
 abstract class ActivityWidgets {
   final ActivityController controller;
 
   ActivityWidgets(this.controller);
 
-  Widget build();
+  List<Widget> pageBodyItems();
+
+  Widget build() {
+    return activityScaffold(pageBodyItems);
+  }
+
+  Widget activityScaffold(List<Widget> Function() body) {
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: ActivityAppBar.getAppBar(controller),
+          body: _pageContent(body),
+        ),
+      ),
+    );
+  }
 
   Widget activityListTable(ActivityController controller,
       {String Function(ActivityStore)? paramGroupBy,
@@ -56,37 +73,37 @@ abstract class ActivityWidgets {
             : "Aulas");
   }
 
-  Widget activityScaffold(ActivityController controller,
-      AppBar Function() appBar, Widget Function() body) {
-    return MaterialApp(
-        home: DefaultTabController(
-            length: 2,
-            child: Scaffold(
-              appBar: appBar(),
-              body: _pageContent(body),
-            )));
-  }
-
-  AppBar getActivityAppBar(String label,
+  AppBar getActivityAppBar(Widget title,
       {List<Widget>? actions, Widget? leading}) {
     return AppBar(
-      title: AppWidgets.getText(
-        label,
-        fontColor: Colors.white,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
+      title: title,
       leading: leading,
       actions: actions,
     );
   }
 
-  Widget _pageContent(Widget Function() body) {
+  Widget getAppActivityAppBarTitle(String title) {
+    return AppWidgets.getText(
+      title,
+      fontColor: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    );
+  }
+
+  Widget _pageContent(List<Widget> Function() body) {
     return AppWidgets.observerBuilder((_) {
       if (controller.isLoading) {
         return AppWidgets.loading();
       }
-      return body();
+      var items = body();
+      return Column(children: [
+        items.first,
+        Expanded(
+            child: SingleChildScrollView(
+          child: items.last,
+        )),
+      ]);
     });
   }
 

@@ -1,12 +1,10 @@
+import 'package:creator_activity/app/constants/activity_delivery_status.dart';
 import 'package:creator_activity/app/constants/color_constants.dart';
-import 'package:creator_activity/app/constants/lib_icons.dart';
 import 'package:creator_activity/app/controllers/stores/activity_store.dart';
 import 'package:creator_activity/app/controllers/student/done_activity_controller.dart';
-import 'package:creator_activity/app/controllers/student/pending_activity_controller.dart';
 import 'package:creator_activity/app/enums/activity_type_enum.dart';
-import 'package:creator_activity/app/lib_session.dart';
 import 'package:creator_activity/app/widgets/app_widgets.dart';
-import 'package:creator_activity/app/widgets/profile/profile_widgets.dart';
+import 'package:creator_activity/app/widgets/page-head-panels/page_head_panel.dart';
 import 'package:creator_activity/app/widgets/tag_widgets.dart';
 import 'package:creator_activity/app/widgets/tralling_icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import '../list_item_widget.dart';
-import 'activity_view_option_widget.dart';
+import '../show_score_widget.dart';
 import 'activity_widget.dart';
 
 class StudenDoneActivityPendingWidgets extends ActivityWidgets {
@@ -23,60 +21,37 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
   StudenDoneActivityPendingWidgets(this._controller) : super(_controller);
 
   @override
-  Widget build() {
-    return activityScaffold(controller, _appBar, _pageBody);
+  List<Widget> pageBodyItems() {
+    return [
+      PageHeadPanel.studentDoneheadPanel(controller),
+      activityListTable(controller, indexedItemBuilder: itemBuild),
+    ];
   }
 
-  Widget _pageBody() {
-    return Column(children: [
-      Padding(
-          padding: const EdgeInsets.only(top: 15, left: 16, bottom: 10),
-          child: Column(
-            children: [
-              ProfileWidgets.titlePanel("Histórico de aulas"),
-              controller.listSize == 0
-                  ? Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Não há aulas realizadas",
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: ColorConstants.defaultGrey),
-                          )),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(
-                        children: <Widget>[
-                          TrallingIconWidget.notSyncedLegend()
-                        ],
-                      ),
-                    )
-            ],
-          )),
-      Expanded(
-          child: SingleChildScrollView(
-        child: activityListTable(controller, indexedItemBuilder: _itemBuild),
-      )),
-    ]);
-  }
-
-  AppBar _appBar() {
-    return getActivityAppBar("Olá ${LibSession.loggedUserName}",
-        leading: _getLeading(), actions: _getAction());
-  }
-
-  Widget _itemBuild(BuildContext _, ActivityStore store, int index) {
+  @override
+  Widget itemBuild(BuildContext context, ActivityStore activity, int index) {
     return ListItemWidget.listItem(
-      store.dto?.name ?? "",
-      onTap: !(store.dto?.synced ?? true)
-          ? () => _controller.openActivity(store)
+      activity.dto?.name ?? "",
+      onTap: !(activity.dto?.synced ?? true)
+          ? () => _controller.openActivity(activity)
           : null,
-      subTitle: _getSubtitle(store),
-      trailing: _getTrailing(store),
+      subTitle: _getSubtitle(activity),
+      trailing: _getTrailing(activity),
     );
+  }
+
+  Function()? getOpenActivityFunction(ActivityStore activity) {
+    if (ActivityType.file != activity.dto?.type) {
+      return () => controller.openActivity(activity);
+    }
+
+    if (!(activity.dto?.synced ?? true)) return null;
+
+    if (ActivityDeliveryStatus.adjusted == activity.dto?.delivery?.status &&
+        !(activity.dto?.delivery?.checked ?? false)) {
+      return () => ShowScoreWidget.show(activity, controller);
+    }
+    return null;
   }
 
   Widget _getTrailing(ActivityStore store) {
@@ -147,31 +122,5 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: list,
     );
-  }
-
-  List<Widget> _getAction() {
-    return [
-      IconButton(
-        icon: LibIcons.generateIcon(LibIcon.syncIcon,
-            color: Colors.white, height: 45, width: 45),
-        onPressed: () async => await _controller.syncActivities(),
-      )
-    ];
-  }
-
-  Widget _getLeading() {
-    return IconButton(
-        icon: const Icon(
-          Icons.settings,
-        ),
-        onPressed: () {
-          showDialog(
-            context: _controller.context,
-            builder: (ctx) {
-              return ActivityViewConfigWidgets.getViewOptionsBody(
-                  _controller.context, _controller.applyViewConfig);
-            },
-          );
-        });
   }
 }

@@ -84,7 +84,8 @@ abstract class AppWidgets {
       String? fontFamily,
       double? fontSize,
       Color? fontColor,
-      FontWeight? fontWeight}) {
+      FontWeight? fontWeight,
+      TextStyle? other}) {
     return Text(
       text,
       textAlign: textAlign,
@@ -93,7 +94,7 @@ abstract class AppWidgets {
         fontFamily: fontFamily,
         fontSize: fontSize,
         fontWeight: fontWeight,
-      ),
+      ).merge(other),
     );
   }
 

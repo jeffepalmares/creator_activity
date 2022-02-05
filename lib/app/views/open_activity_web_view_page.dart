@@ -2,6 +2,7 @@ import 'package:commons_flutter/utils/dependency_injector.dart';
 import 'package:creator_activity/app/controllers/open_activity_controller.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
 import 'package:creator_activity/app/utils/dialog_utils.dart';
+import 'package:creator_activity/app/widgets/app_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,8 +54,16 @@ class OpenActivityWebViewPageState extends State<OpenActivityWebViewPage> {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     link = args["link"] as String;
     dto = args["dto"] as ActivityDto;
+    controller.state = true;
     return SafeArea(
-      child: _getWebView(context),
+      child: AppWidgets.observerBuilder(
+        (p0) => Stack(
+          children: [
+            _getWebView(context),
+            controller.state ? AppWidgets.loading() : const SizedBox(),
+          ],
+        ),
+      ),
     );
   }
 

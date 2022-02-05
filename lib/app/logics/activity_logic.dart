@@ -8,7 +8,7 @@ abstract class ActivityLogic {
 
   Future<ActivityDto> deleteDownloadedActivity(ActivityDto dto);
 
-  Future<List<ActivityDto>> loadActivities(SyncRequestDto dto);
+  Future<List<ActivityDto>> loadActivities(SyncRequestDto syncRequest);
 
   Future<String> downloadActivity(
       String code, Function(String percent) onReceive);

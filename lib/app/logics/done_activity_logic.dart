@@ -16,6 +16,7 @@ class DoneActivityLogic extends StudentActivityLogic {
       ActivityDownloadLogic downloadLogic)
       : super(service, repository, downloadLogic);
 
+  @override
   Future<List<ActivityDto>> loadActivities(SyncRequestDto syncRequest) async {
     try {
       syncRequest = await sendDoneActivities(syncRequest);
