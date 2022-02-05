@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:commons_flutter/exceptions/app_error.dart';
 import 'package:commons_flutter/http/app_http_client.dart';
-import 'package:commons_flutter/http/http_request_config.dart';
 import 'package:commons_flutter/utils/network_utils.dart';
 import 'package:creator_activity/app/dtos/activity_delivery_dto.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
@@ -112,9 +110,6 @@ class StudentActivityService {
     try {
       var files =
           contents.map((c) => {"tipo": "arquivo", "conteudo": c}).toList();
-      // if (activity.delivery != null && activity.delivery.id != null) {
-      //   data.putIfAbsent("cancelar_entrega", () => activity.delivery.id);
-      // }
       var data = {
         "projeto": activity.id,
         "tipo": "arquivo",
@@ -124,7 +119,7 @@ class StudentActivityService {
         data.putIfAbsent('cancelar_entrega', () => activity.delivery?.id);
       }
       var stringJson = json.encode(data);
-      var resp = await _client.post('/projeto/pt-br/entrega/registrar',
+      await _client.post('/projeto/pt-br/entrega/registrar',
           data: stringJson.toString());
     } catch (err) {
       rethrow;
