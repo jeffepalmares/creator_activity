@@ -1,7 +1,7 @@
 import 'package:creator_activity/app/constants/activity_delivery_status.dart';
 import 'package:creator_activity/app/constants/color_constants.dart';
 import 'package:creator_activity/app/controllers/stores/activity_store.dart';
-import 'package:creator_activity/app/controllers/student/done_activity_controller.dart';
+import 'package:creator_activity/app/controllers/student/student_done_activity_controller.dart';
 import 'package:creator_activity/app/enums/activity_type_enum.dart';
 import 'package:creator_activity/app/widgets/app_widgets.dart';
 import 'package:creator_activity/app/widgets/page-head-panels/page_head_panel.dart';
@@ -16,7 +16,7 @@ import '../show_score_widget.dart';
 import 'activity_widget.dart';
 
 class StudenDoneActivityPendingWidgets extends ActivityWidgets {
-  final DoneActivityController _controller;
+  final StudentDoneActivityController _controller;
 
   StudenDoneActivityPendingWidgets(this._controller) : super(_controller);
 
@@ -32,9 +32,7 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
   Widget itemBuild(BuildContext context, ActivityStore activity, int index) {
     return ListItemWidget.listItem(
       activity.dto?.name ?? "",
-      onTap: !(activity.dto?.synced ?? true)
-          ? () => _controller.openActivity(activity)
-          : null,
+      onTap: getOpenActivityFunction(activity),
       subTitle: _getSubtitle(activity),
       trailing: _getTrailing(activity),
     );

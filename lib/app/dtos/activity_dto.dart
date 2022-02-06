@@ -30,6 +30,8 @@ class ActivityDto {
   List<ActivityFileDto>? files = [];
   ActivityStatus? status;
   ActivityDeliveryDto? delivery;
+  String? classCode;
+  String? schoolCode;
 
   ActivityDto({
     this.id,
@@ -51,6 +53,8 @@ class ActivityDto {
     this.files,
     this.status,
     this.delivery,
+    this.classCode,
+    this.schoolCode,
   });
 
   get score {

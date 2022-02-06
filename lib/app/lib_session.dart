@@ -6,6 +6,8 @@ abstract class LibSession {
   static String loggedUserName = "";
   static String loggedUserPicture = "";
   static String httpToken = "";
-  static SyncPreference syncPreference = SyncPreference.automatically;
+  static SyncPreference? syncPreference = SyncPreference.automatically;
   static bool isExternalStorage = false;
+  //Corp
+  static String schoolClassCode = "";
 }

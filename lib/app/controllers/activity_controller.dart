@@ -3,10 +3,9 @@ import 'package:commons_flutter/utils/app_navigator.dart';
 import 'package:creator_activity/app/constants/lib_routes.dart';
 import 'package:creator_activity/app/controllers/activity_helper.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
-import 'package:creator_activity/app/dtos/sync_request_dto.dart';
 import 'package:creator_activity/app/enums/action_state_enum.dart';
 import 'package:creator_activity/app/lib_session.dart';
-import 'package:creator_activity/app/logics/activity_logic.dart';
+import 'package:creator_activity/app/logics/generics/activity_logic.dart';
 import 'package:creator_activity/app/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -34,12 +33,12 @@ abstract class _ActivityControllerBase with Store {
 
   Future<String?> generateActivityLink(ActivityStore store);
 
-  Future<void> syncActivities();
+  Future<void> syncActivities() async {}
 
   @action
   Future<List<ActivityDto>> loadActivities({bool isManual = false}) async {
     state = ActionState.loading;
-    activitiesSource = await _logic.loadActivities(SyncRequestDto(isManual));
+    activitiesSource = await _logic.loadActivities(isManual);
     applyViewConfig();
     state = ActionState.success;
     return activitiesSource;
@@ -98,9 +97,7 @@ abstract class _ActivityControllerBase with Store {
       link = EncodeUtils.encodeUri(link);
 
       debugPrint('Link: $link');
-
-      await AppNavigator.pushNamed(LibRoutes.openActivity,
-          arguments: {"link": link, 'dto': store.dto});
+      await navigateToWebView(link, store.dto!);
       store.setScore();
 
       if (store.dto?.showPopup ?? false) {
@@ -113,6 +110,11 @@ abstract class _ActivityControllerBase with Store {
     } catch (err) {
       state = ActionState.success;
     }
+  }
+
+  Future<void> navigateToWebView(String link, ActivityDto dto) async {
+    await AppNavigator.pushNamed(LibRoutes.openActivity,
+        arguments: {"link": link, 'dto': dto});
   }
 
   @action

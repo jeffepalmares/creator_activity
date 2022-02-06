@@ -4,7 +4,7 @@ import 'package:creator_activity/app/dtos/activity_dto.dart';
 import 'package:creator_activity/app/dtos/activity_file_dto.dart';
 import 'package:creator_activity/app/dtos/activity_score_dto.dart';
 import 'package:creator_activity/app/dtos/scorm_dto.dart';
-import 'package:creator_activity/app/logics/open_activity_logic.dart';
+import 'package:creator_activity/app/logics/webview/open_activity_logic.dart';
 import 'package:mobx/mobx.dart';
 
 part 'open_activity_controller.g.dart';

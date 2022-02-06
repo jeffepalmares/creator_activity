@@ -1,5 +1,5 @@
 import 'package:commons_flutter/utils/dependency_injector.dart';
-import 'package:creator_activity/app/controllers/student/done_activity_controller.dart';
+import 'package:creator_activity/app/controllers/student/student_done_activity_controller.dart';
 import 'package:creator_activity/app/widgets/activity/student_done_activity_pending_widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +13,8 @@ class DoneActivityStudentPage extends StatefulWidget {
 }
 
 class DoneActivityStudentPageState extends State<DoneActivityStudentPage> {
-  DoneActivityController controller =
-      DependencyInjector.get<DoneActivityController>();
+  StudentDoneActivityController controller =
+      DependencyInjector.get<StudentDoneActivityController>();
   @override
   void initState() {
     super.initState();

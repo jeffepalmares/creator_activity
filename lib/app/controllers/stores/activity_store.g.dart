@@ -73,13 +73,13 @@ mixin _$ActivityStore on _ActivityStore, Store {
   final _$scoreAtom = Atom(name: '_ActivityStore.score');
 
   @override
-  String get score {
+  String? get score {
     _$scoreAtom.reportRead();
     return super.score;
   }
 
   @override
-  set score(String value) {
+  set score(String? value) {
     _$scoreAtom.reportWrite(value, super.score, () {
       super.score = value;
     });

@@ -7,27 +7,27 @@ import '../app_widgets.dart';
 import 'activity_view_option_widget.dart';
 
 abstract class ActivityAppBar {
-  static AppBar? getAppBar(ActivityController controller) {
-    return getActivityAppBar(
-      getAppActivityAppBarTitle("Olá ${LibSession.loggedUserName}"),
+  static AppBar? getAppBar(
+    ActivityController controller, {
+    Color? backGroundColor,
+    double? elevation,
+    Color titleColor = Colors.white,
+  }) {
+    return AppBar(
+      title: getAppActivityAppBarTitle("Olá ${LibSession.loggedUserName}",
+          titleColor: titleColor),
       leading: getAppBarLeading(controller),
       actions: getAppBarActions(controller),
+      backgroundColor: backGroundColor,
+      elevation: elevation,
     );
   }
 
-  static AppBar getActivityAppBar(Widget title,
-      {List<Widget>? actions, Widget? leading}) {
-    return AppBar(
-      title: title,
-      leading: leading,
-      actions: actions,
-    );
-  }
-
-  static Widget getAppActivityAppBarTitle(String title) {
+  static Widget getAppActivityAppBarTitle(String title,
+      {Color titleColor = Colors.white}) {
     return AppWidgets.getText(
       title,
-      fontColor: Colors.white,
+      fontColor: titleColor,
       fontSize: 20,
       fontWeight: FontWeight.bold,
     );

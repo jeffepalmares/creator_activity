@@ -28,7 +28,7 @@ abstract class _ActivityStore with Store {
   String downloadingPercent = "0";
 
   @observable
-  String score = "0";
+  String? score = "0";
 
   @action
   setScore() {

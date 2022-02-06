@@ -1,6 +1,7 @@
 import 'package:commons_flutter/utils/app_date_utils.dart';
 import 'package:commons_flutter/utils/app_string_utils.dart';
 import 'package:creator_activity/app/constants/activity_delivery_status.dart';
+import 'package:creator_activity/app/constants/color_constants.dart';
 import 'package:creator_activity/app/controllers/activity_controller.dart';
 import 'package:creator_activity/app/controllers/stores/activity_store.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
@@ -31,11 +32,15 @@ abstract class ActivityWidgets {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: ActivityAppBar.getAppBar(controller),
+          appBar: getAppBar(),
           body: _pageContent(body),
         ),
       ),
     );
+  }
+
+  AppBar? getAppBar() {
+    return ActivityAppBar.getAppBar(controller);
   }
 
   Widget activityListTable(ActivityController controller,
@@ -52,6 +57,7 @@ abstract class ActivityWidgets {
   }
 
   String getSubtitleDate(ActivityDto dto) {
+    dto.start = dto.start ?? DateTime.now().toIso8601String();
     if ((dto.end == null ||
             DateTime.parse(dto.end ?? "").isAfter(DateTime.now())) &&
         AppStringUtils.isNotEmptyOrNull(dto.start)) {

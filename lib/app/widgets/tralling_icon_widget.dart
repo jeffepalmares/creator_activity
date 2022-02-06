@@ -116,7 +116,7 @@ class TrallingIconWidget {
     );
   }
 
-  static List<Widget> scoreTralling(String score, bool? isSynced) {
+  static List<Widget> scoreTralling(String? score, bool? isSynced) {
     var list = <Widget>[];
     list.add(TrallingIconWidget.scoreIcon(score));
     list.add(TrallingIconWidget.redoIcon(isSynced));
@@ -138,16 +138,13 @@ class TrallingIconWidget {
   static Widget downloadProgress(String percent) {
     percent = percent.replaceAll("%", "").trim();
     percent = percent == "##" ? "0" : percent;
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          _progressCircular(percent),
-          _circleBlueShape(),
-          _percentLabel(percent),
-        ],
-      ),
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        _progressCircular(percent),
+        _circleBlueShape(),
+        _percentLabel(percent),
+      ],
     );
   }
 

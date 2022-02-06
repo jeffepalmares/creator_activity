@@ -7,13 +7,7 @@ import 'package:flutter/widgets.dart';
 class DialogUtils {
   static Widget _getAlert(BuildContext context, Widget title, Widget content,
       {List<Widget>? actions, Function()? onTap}) {
-    actions = actions ??
-        [
-          _getButton("OK", () {
-            (onTap ?? onTap!());
-            AppNavigator.pop(context);
-          }, context)
-        ];
+    actions = actions ?? [_getButton("OK", onTap, context)];
     return AlertDialog(
       title: title,
       content: content,
@@ -94,10 +88,10 @@ class DialogUtils {
           fixedSize: Size(width ?? 100, 20),
         ),
         onPressed: () {
-          Navigator.of(context).pop();
           if (onTap != null) {
             onTap();
           }
+          Navigator.of(context).pop();
         },
       ),
     );

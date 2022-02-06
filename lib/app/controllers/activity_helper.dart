@@ -50,14 +50,14 @@ abstract class ActivityHelper {
 
   static bool _isOnlineOpenActivity(ActivityStore store) {
     return !store.isDownloaded &&
-        !AppStringUtils.isEmptyOrNull(store.dto?.localLink);
+        AppStringUtils.isEmptyOrNull(store.dto?.localLink);
   }
 
   static Future<String?> getActivityLink(
       ActivityStore store, BuildContext context) async {
     var link = "";
 
-    if (_isOnlineOpenActivity(store)) {
+    if (!_isOnlineOpenActivity(store)) {
       link = _generateLink(
           "file://${store.dto?.localLink ?? ""}", store.dto?.isExam);
     } else {

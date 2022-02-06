@@ -10,11 +10,14 @@ abstract class ListItemWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 8, top: 16, bottom: 10),
+        padding:
+            const EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 10),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _rowContent(title, subTitle: subTitle),
-            trailing ?? Container(),
+            trailing ?? const SizedBox(),
           ],
         ),
       ),
@@ -28,7 +31,7 @@ abstract class ListItemWidget {
         children: <Widget>[
           _tileTitle(title),
           AppWidgets.heightSpacer(height: 4),
-          subTitle ?? Container(),
+          subTitle ?? const SizedBox(),
         ],
       ),
     );

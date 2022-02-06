@@ -3,7 +3,7 @@ import 'package:creator_activity/app/controllers/activity_helper.dart';
 import 'package:creator_activity/app/controllers/stores/activity_store.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
 import 'package:creator_activity/app/enums/action_state_enum.dart';
-import 'package:creator_activity/app/logics/student_peding_activity_logic.dart';
+import 'package:creator_activity/app/logics/student/student_peding_activity_logic.dart';
 import 'package:mobx/mobx.dart';
 
 part 'pending_activity_controller.g.dart';
