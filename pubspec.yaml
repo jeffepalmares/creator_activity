@@ -15,7 +15,7 @@ environment:
 dependencies:
   cached_network_image: ^3.0.0
   commons_flutter:
-    path: /Users/jeffersoncardoso/Documents/Dev/sources/commons_creator
+    git: https://github.com/jeffepalmares/commons-flutter
   flutter:
     sdk: flutter
   flutter_mobx: ^2.0.2
@@ -28,13 +28,13 @@ dependencies:
   url_launcher: ^6.0.12
   webview_flutter:
     git:
-      url: https://creator4all:sq3a2dsq4cztirngbhqxgxyzj6hlh3mfnheyr34nv5zwzwu7abka@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
+      url: https://thide2001:oirxkn4tajvuboodmmwogijbvpx3xc5eucx5vbetcm5u3pwvx5wa@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
       path: packages/webview_flutter/webview_flutter
 
 dependency_overrides:
   webview_flutter_android:
     git:
-      url: https://creator4all:sq3a2dsq4cztirngbhqxgxyzj6hlh3mfnheyr34nv5zwzwu7abka@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
+      url: https://thide2001:oirxkn4tajvuboodmmwogijbvpx3xc5eucx5vbetcm5u3pwvx5wa@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
       path: packages/webview_flutter/webview_flutter_android
 
 dev_dependencies:

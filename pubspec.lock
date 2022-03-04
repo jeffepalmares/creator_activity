@@ -179,9 +179,11 @@ packages:
   commons_flutter:
     dependency: "direct main"
     description:
-      path: "/Users/jeffersoncardoso/Documents/Dev/sources/commons_creator"
-      relative: false
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "57fbcb89922f90568ee9076809b77293c0fcd7bc"
+      url: "https://github.com/jeffepalmares/commons-flutter"
+    source: git
     version: "0.0.1"
   connectivity:
     dependency: transitive
@@ -880,8 +882,8 @@ packages:
     description:
       path: "packages/webview_flutter/webview_flutter"
       ref: HEAD
-      resolved-ref: "908b8a4dfda069fbb505fedc82dbe387759175c2"
-      url: "https://creator4all:sq3a2dsq4cztirngbhqxgxyzj6hlh3mfnheyr34nv5zwzwu7abka@dev.azure.com/creator4all/app-aluno/_git/webview-flutter"
+      resolved-ref: efe6c1928f9f4dc71528b41c456f1b2c44a79caa
+      url: "https://thide2001:oirxkn4tajvuboodmmwogijbvpx3xc5eucx5vbetcm5u3pwvx5wa@dev.azure.com/creator4all/app-aluno/_git/webview-flutter"
     source: git
     version: "3.0.0"
   webview_flutter_android:
@@ -890,7 +892,7 @@ packages:
       path: "packages/webview_flutter/webview_flutter_android"
       ref: HEAD
       resolved-ref: efe6c1928f9f4dc71528b41c456f1b2c44a79caa
-      url: "https://creator4all:sq3a2dsq4cztirngbhqxgxyzj6hlh3mfnheyr34nv5zwzwu7abka@dev.azure.com/creator4all/app-aluno/_git/webview-flutter"
+      url: "https://thide2001:oirxkn4tajvuboodmmwogijbvpx3xc5eucx5vbetcm5u3pwvx5wa@dev.azure.com/creator4all/app-aluno/_git/webview-flutter"
     source: git
     version: "2.8.3"
   webview_flutter_platform_interface:
