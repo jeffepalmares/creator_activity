@@ -43,13 +43,19 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
       return () => controller.openActivity(activity);
     }
 
-    if (!(activity.dto?.synced ?? true)) return null;
+    if (activity.dto?.delivery != null &&
+        ActivityDeliveryStatus.adjusted == activity.dto?.delivery?.status &&
+        (activity.dto?.delivery?.checked ?? false) &&
+        !(activity.dto?.delivery?.shouldRedo ?? false)) {
+      return null;
+    }
 
     if (ActivityDeliveryStatus.adjusted == activity.dto?.delivery?.status &&
         !(activity.dto?.delivery?.checked ?? false)) {
       return () => ShowScoreWidget.show(activity, controller);
     }
-    return null;
+
+    return () => controller.openActivity(activity);
   }
 
   Widget _getTrailing(ActivityStore store) {
@@ -72,8 +78,7 @@ class StudenDoneActivityPendingWidgets extends ActivityWidgets {
     }
 
     if (store.isDownloaded) {
-      items.add(TrallingIconWidget.deleteActivityIcon(
-          () => _controller.deleteDownloadedActivity(store)));
+      items.add(deleteDownloadedIcon(store));
     } else {
       items.add(TrallingIconWidget.downloadIco(
           () => _controller.downloadActivity(store)));

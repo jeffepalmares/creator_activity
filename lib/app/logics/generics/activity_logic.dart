@@ -1,5 +1,6 @@
 import 'package:commons_flutter/utils/app_string_utils.dart';
 import 'package:commons_flutter/utils/disk_utils.dart';
+import 'package:commons_flutter/utils/network_utils.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
 import 'package:creator_activity/app/enums/activity_type_enum.dart';
 import 'package:creator_activity/app/logics/generics/file_activity_logic.dart';
@@ -16,6 +17,7 @@ abstract class ActivityLogic {
 
   Future<ActivityDto> checkLastDeliveryStatus(ActivityDto dto) async {
     if (ActivityType.file != dto.type) return dto;
+    if (!(await NetworkUtils.hasInternetConnection())) return dto;
     dto = await fileLogic.doCheckLastDeliveryStatus(dto);
     await updateActivity(dto);
     return dto;

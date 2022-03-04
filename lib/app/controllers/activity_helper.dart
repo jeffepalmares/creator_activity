@@ -62,12 +62,11 @@ abstract class ActivityHelper {
           "file://${store.dto?.localLink ?? ""}", store.dto?.isExam);
     } else {
       link = _generateLink(store.dto?.link, store.dto?.isExam);
+    }
+    if (store.dto?.type == ActivityType.file) {
+      var params = getFileParams(store);
 
-      if (store.dto?.type == ActivityType.file) {
-        var params = getFileParams(store);
-
-        link = "$link&sendFiles=${EncodeUtils.encodeBase64(params)}";
-      }
+      link = "$link&sendFiles=${EncodeUtils.encodeBase64(params)}";
     }
     debugPrint(link);
     return link;

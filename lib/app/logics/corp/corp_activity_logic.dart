@@ -17,7 +17,7 @@ abstract class CorpActivityLogic extends ActivityLogic {
   ) : super(fileLogic);
 
   final ILocalStorage<ActivityDto, String> _repository;
-  final CoprActivityService _service;
+  final CorpActivityService _service;
   final ActivityDownloadLogic _downloadLogic;
 
   Future<List<ActivityDto>> syncActivitites(

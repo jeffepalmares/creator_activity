@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:commons_flutter/utils/dependency_injector.dart';
 import 'package:creator_activity/app/controllers/open_activity_controller.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';
@@ -20,6 +22,8 @@ class OpenActivityWebViewPage extends StatefulWidget {
 }
 
 class OpenActivityWebViewPageState extends State<OpenActivityWebViewPage> {
+  late WebViewController webViewController;
+  late BuildContext context;
   String link = "";
   ActivityDto dto = ActivityDto();
   OpenActivityController controller =
@@ -35,6 +39,9 @@ class OpenActivityWebViewPageState extends State<OpenActivityWebViewPage> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight
     ]);
+    if (Platform.isAndroid) {
+      WebView.platform = AndroidWebView();
+    }
   }
 
   @override
@@ -51,6 +58,7 @@ class OpenActivityWebViewPageState extends State<OpenActivityWebViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     link = args["link"] as String;
     dto = args["dto"] as ActivityDto;
@@ -72,6 +80,11 @@ class OpenActivityWebViewPageState extends State<OpenActivityWebViewPage> {
       initialUrl: link,
       initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
       javascriptMode: JavascriptMode.unrestricted,
+      onWebViewCreated: (controller) {
+        if (Platform.isIOS) {
+          webViewController = controller;
+        }
+      },
       onPageFinished: (url) => controller.finishLoad(),
       onWebResourceError: (err) {
         if (err.errorType == WebResourceErrorType.unknown) {
@@ -94,7 +107,7 @@ class OpenActivityWebViewPageState extends State<OpenActivityWebViewPage> {
     return JavascriptChannel(
         name: "appCloseClass",
         onMessageReceived: (JavascriptMessage message) {
-          Navigator.pop(this.context);
+          Navigator.pop(context);
         });
   }
 

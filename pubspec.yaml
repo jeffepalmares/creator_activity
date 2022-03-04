@@ -24,17 +24,17 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   mobx: ^2.0.5
-  step_progress_indicator: ^1.0.2
+  step_progress_indicator: ^0.2.5+8
   url_launcher: ^6.0.12
   webview_flutter:
     git:
-      url: https://creator4all:32wex3dmidumm2liysn7wzprsxczrpfeusfbabk3a2tzg5bz452q@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
+      url: https://creator4all:sq3a2dsq4cztirngbhqxgxyzj6hlh3mfnheyr34nv5zwzwu7abka@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
       path: packages/webview_flutter/webview_flutter
 
 dependency_overrides:
   webview_flutter_android:
     git:
-      url: https://creator4all:32wex3dmidumm2liysn7wzprsxczrpfeusfbabk3a2tzg5bz452q@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
+      url: https://creator4all:sq3a2dsq4cztirngbhqxgxyzj6hlh3mfnheyr34nv5zwzwu7abka@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
       path: packages/webview_flutter/webview_flutter_android
 
 dev_dependencies:

@@ -12,7 +12,6 @@ class ActivityDownloadService {
   ) async {
     try {
       var uri = "/projeto/pt-br/download/projeto/$code";
-
       var response = await _client.get(uri,
           options: HttpRequestConfig(
             responseType: HttpResponseType.bytes,

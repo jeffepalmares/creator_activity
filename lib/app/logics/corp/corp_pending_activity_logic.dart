@@ -8,7 +8,7 @@ import 'package:creator_activity/app/logics/generics/activity_download_logic.dar
 class CoprPendingActivityLogic extends CorpActivityLogic {
   CoprPendingActivityLogic(
       ILocalStorage<ActivityDto, String> repository,
-      CoprActivityService service,
+      CorpActivityService service,
       ActivityDownloadLogic downloadLogic,
       FileActivityLogic fileLogic)
       : super(repository, service, downloadLogic, fileLogic);

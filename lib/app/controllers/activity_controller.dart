@@ -61,12 +61,20 @@ abstract class _ActivityControllerBase with Store {
 
   @action
   Future<void> downloadActivity(ActivityStore activity) async {
-    activity.isDownloading = true;
-    var path = await _logic.downloadActivity(activity.dto!.code!,
-        (String percent) => activity.downloadingPercent = "$percent %");
-    activity.isDownloading = false;
-    activity.dto?.localLink = path;
-    activity.isDownloaded = true;
+    try {
+      activity.isDownloading = true;
+      var path =
+          await _logic.downloadActivity(activity.dto!.code!, (String percent) {
+        activity.downloadingPercent = "$percent %";
+      });
+      activity.isDownloading = false;
+      activity.dto?.localLink = path;
+      activity.isDownloaded = true;
+    } catch (e) {
+      activity.isDownloading = false;
+      DialogUtils.presentDialog(context, "Ops...",
+          "Desculpe mas algo saiu errado ao tentar baixar a aula!");
+    }
   }
 
   @computed

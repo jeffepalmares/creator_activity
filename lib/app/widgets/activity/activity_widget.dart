@@ -1,7 +1,6 @@
 import 'package:commons_flutter/utils/app_date_utils.dart';
 import 'package:commons_flutter/utils/app_string_utils.dart';
 import 'package:creator_activity/app/constants/activity_delivery_status.dart';
-import 'package:creator_activity/app/constants/color_constants.dart';
 import 'package:creator_activity/app/controllers/activity_controller.dart';
 import 'package:creator_activity/app/controllers/stores/activity_store.dart';
 import 'package:creator_activity/app/dtos/activity_dto.dart';

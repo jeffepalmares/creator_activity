@@ -4,10 +4,10 @@ import 'package:creator_activity/app/dtos/corp_done_activity_dto.dart';
 import 'package:creator_activity/app/lib_session.dart';
 import 'package:creator_activity/app/services/requests/corp_sync_done_acitivity_request.dart';
 
-class CoprActivityService {
+class CorpActivityService {
   final AppHttpClient _client;
 
-  CoprActivityService(this._client);
+  CorpActivityService(this._client);
 
   Future<void> sendDoneActivities(List<CorpDoneActivityDto> activities) async {
     try {
