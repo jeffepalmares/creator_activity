@@ -111,7 +111,7 @@ abstract class ActivityHelper {
         "isGravarOffline": true,
         "callback": "offlineDeliveryFile", // função sem o postMessage
         "data": {
-          "projeto": "nome do projeto", // nome da aula
+          "projeto": store.dto?.name, // nome da aula
           "tipo": "arquivo",
           "upload_video_max_time":
               60, // informação da api de limites da plataforma
@@ -129,7 +129,7 @@ abstract class ActivityHelper {
           "https://webservice.creator4all.com/projeto/pt-br/entrega/registrar",
       "callback": "onlineDeliveryFile", // função sem o postMessage
       "data": {
-        "projeto": "aula de teste", // nome da aula
+        "projeto": store.dto?.name, // nome da aula
         "tipo": "arquivo",
         "upload_video_max_time":
             60, // informação da api de limites da plataforma

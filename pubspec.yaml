@@ -28,13 +28,13 @@ dependencies:
   url_launcher: ^6.0.12
   webview_flutter:
     git:
-      url: https://thide2001:oirxkn4tajvuboodmmwogijbvpx3xc5eucx5vbetcm5u3pwvx5wa@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
+      url: https://thide2001:f4x3buvszswwfyrwzwefmah7i2jwl7klj25kpuaf264s2pm3a3nq@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
       path: packages/webview_flutter/webview_flutter
 
 dependency_overrides:
   webview_flutter_android:
     git:
-      url: https://thide2001:oirxkn4tajvuboodmmwogijbvpx3xc5eucx5vbetcm5u3pwvx5wa@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
+      url: https://thide2001:f4x3buvszswwfyrwzwefmah7i2jwl7klj25kpuaf264s2pm3a3nq@dev.azure.com/creator4all/app-aluno/_git/webview-flutter
       path: packages/webview_flutter/webview_flutter_android
 
 dev_dependencies:

@@ -17,14 +17,16 @@ abstract class ActivityViewConfigWidgets {
 
   static Widget getViewOptionsBody(BuildContext context, Function action) {
     var currentConfig = _viewConfig();
-    return Center(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _bodyItems(context, currentConfig, action),
+    return SingleChildScrollView(
+      child: Center(
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: _bodyItems(context, currentConfig, action),
+            ),
           ),
         ),
       ),
