@@ -24,7 +24,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   mobx: ^2.0.5
-  step_progress_indicator: ^0.2.5+8
+  step_progress_indicator: ^1.0.2
   url_launcher: ^6.0.12
   webview_flutter:
     git:
